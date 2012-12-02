@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Plannr</title>
+    
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuV76jmQ-5WdwwkVzOP3_WHkk5LPGjdm4&sensor=false"></script>
+   	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+   	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+   	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+    <script src="javascripts/user_forms.js"> </script>
+    <script src="javascripts/trip.js"> </script>
+    <script src="javascripts/trip_forms.js"> </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  </head>
+  
+  <body>
+
+<!-- Home Login/Signup Page ---------------------------------- -->
+<div data-role="page" id="intro" data-theme="a">
+
+	<div data-role="header">
+		<h1>Welcome to TripPlannr</h1>
+	</div>
+	
+	<div>
+		
+	</div>
+		<form id="login">
+			<div data-role="fieldcontain" class="ui-hide-label">
+				<label for="username">Username:</label>
+				<input type="text" name="username" id="username" placeholder="Username"/>
+			</div>
+			<div data-role="fieldcontain" class="ui-hide-label">
+				<label for="password">Password:</label>
+				<input type="text" name="password" id="password" placeholder="Password"/>
+			</div>
+			<input type="submit" value="Login" />
+		</form>
+		
+		<div class="error"></div>
+		
+		<br>
+		
+		<p>Need an account?</p>
+		<a href='#sign_up' data-role='button' data-inline='true'>Sign Up!</a>
+		
+		<p>About TripPlannr</p>	
+		<a href='#help' data-role='button' data-inline='true'>Learn about us...</a>	
+
+</div>
+
+<div data-role='page' id='help' data-theme='a'>
+	
+	<div data-role="header">
+		<h1>TripPlannr</h1>
+	</div>
+	
+	<div data-role="collapsible-set">
+		<div data-role="collapsible" data-collapsed="true">
+			<h3>What is TripPlannr?</h3>
+			<p>I'm the collapsible set content for section 1.</p>
+		</div>
+		
+		<div data-role="collapsible">
+			<h3>What's the point?</h3>
+			<p><b>REDUCES TIRED LEGS!</b>
+				<br>
+				<br>
+				Ever been walking around a city wanting to see all 
+				there is to see and realize that your legs just couldn't do it. 
+				TripPlannr will optimize your trip so that you walk shorter 
+				distances and see more.
+				
+			</p>
+		</div>
+		
+		<div data-role="collapsible">
+			<h3>Can I use TripPlannr on the go?</h3>
+			<p><b>YES!</b>
+				<br>
+				<br>
+				TripPlannr is actually designed for mobile devices.
+				We thought that you would benefit from being able to 
+				take your trips on the go.  Anywhere you can find a network 
+				connection TripPlannr is there.
+			</p>
+		</div>
+	</div>
+
+</div>
+
+<!-- ----------------------------------------------- -->
+
+<!-- User Sign Up Page ----------------------------- -->
+
+
+<div data-role="page" id="sign_up" data-theme="a">
+	<form id="signup">
+		<div data-role="fieldcontain" class="ui-hide-label">
+			<label for="username">Username:</label>
+			<input type="text" name="sign_up_username" id="sign_up_username" placeholder="Username"/>
+		</div>
+		<div data-role="fieldcontain" class="ui-hide-label">
+			<label for="password">Password:</label>
+			<input type="text" name="sign_up_password" id="sign_up_password" placeholder="Password"/>
+		</div>
+		<input type="submit" value="Sign Up" />
+	</form>
+		
+	<div class="error"></div>
+</div>
+
+<!-- ----------------------------------------------- -->
+
+<!-- User UI Page ---------------------------------- -->
+<div data-role="page" id="userUi" data-theme="a">
+
+	<div data-role="header">
+		<h1 id="welcome_header"></h1>
+	</div><!-- /header -->
+	
+		<p>What would you like to do?</p>
+		
+		<div data-role="collapsible-set">
+			<div data-role="collapsible">
+	   			<h3>Plan a trip.</h3>
+	   			<p>Enter a city to start planning.</p>
+	   			<input type="text" id="city" />
+	   			<button id = "start_planning">Start planning!</button>
+			</div>
+			
+			<div data-role="collapsible">
+	   			<h3>Load saved trips.</h3>
+	   			<ul>
+	   				<!-- saved trips will be inserted here from db -->
+	   			</ul>
+			</div>
+		</div>
+		
+</div>
+
+<!-- ----------------------------------------------- -->
+
+<!-- Select Categories Page ---------------------------------- -->
+
+<div data-role="page" id="categories" data-theme="a">
+
+	<div data-role="header">
+		<h1>Choose Categories</h1>
+	</div><!-- /header -->
+		
+		<form id="categoryForm">
+			<input type='hidden' id="hidden_city" value='' />
+			<label><input type="checkbox" id="collegeuniv" /> Colleges & Universities </label>
+			<label><input type="checkbox" id="landmarks" /> Landmarks </label>
+			<label><input type="checkbox" id="movietheaters" /> Movie Theaters </label>
+			<label><input type="checkbox" id="parks" /> Parks </label>
+			<label><input type="checkbox" id="stadiumsarenas" /> Stadiums & Arenas </label>
+			<label><input type="checkbox" id="zoos" /> Zoos </label>
+			<input type='submit' id='submitCategories' value="Plan!" />
+		</form>
+		
+</div>
+
+<!-- ----------------------------------------------- -->
+
+
+<!-- Select Attractions Page ---------------------------------- -->
+
+<div data-role="page" id="attractions" data-theme="a">
+	
+	<!-- /header -->
+	<div data-role="header" data-id="attractionsBar" data-position="fixed">
+		<div data-role="navbar">
+			<ul class="attractionsList">
+				
+			</ul>
+		</div>
+	</div>
+
+</div>
+
+<!-- ----------------------------------------------- -->
+
+
+<!-- Show Trip Page ---------------------------------- -->
+
+<div data-role="page" id="trip" data-theme="a">
+	<div data-role="header">
+		<h1>Your Trip!</h1>
+	</div>
+	
+	<div id="mapLocation"></div>
+			
+</div>
+
+
+</body>
+</html>
+
+
+	
+

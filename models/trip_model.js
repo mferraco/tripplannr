@@ -15,6 +15,7 @@ exports.getAttractions = function(req, res) {
 	//get attractions from Yelp API with AJAX request
 	
 	var categories = req.query.categories;
+	console.log('categories = ' + categories);
 	
 	//loop through and turn into string to be used in query
 	var catString = "";
@@ -25,6 +26,7 @@ exports.getAttractions = function(req, res) {
 			catString+= ',';
 	}
 	var city = req.query.city;
+	console.log('city = ' + city);
 	
 	yelp.search({location: city, category_filter: catString }, function(err, data) {
 			//set up the category map with an empty array value for each category key
@@ -60,6 +62,8 @@ exports.getAttractions = function(req, res) {
 				count++;
 			}
 			
+			console.log('category json ------------------------------------');
+			console.log(categoryJSON);
 			//pass the map to the view to render the category tabs
 			res.json('categories', {categoryJSON: categoryJSON});
 	});	

@@ -30,7 +30,7 @@ function attractionsRequest() {
 	var movietheaters = $('#movietheaters').is(':checked');
 	var parks = $('#parks').is(':checked');
 	var stadiumsarenas = $('#stadiumsarenas').is(':checked');
-	var zoos = $('#zoos').is(':checked')
+	var zoos = $('#zoos').is(':checked');
 	
 	var categories = [];
 	
@@ -53,6 +53,9 @@ function attractionsRequest() {
 		categories.push('zoos');
 	}
 	
+	console.log('here categories = ' + categories);
+	console.log('here city = ' + $('#city').val());
+	
 	$.ajax({
 			url: "attractionsRequest",
 			type: "get",
@@ -63,6 +66,8 @@ function attractionsRequest() {
 			success: function(data) {	
 				//set the category JSON from the JSON returned
 				var categoryJSON = data.categoryJSON;
+				console.log('categoryJSON ----------------------- ');
+				console.log(categoryJSON);
 				//empty the attractions list
 				$('#attractionsList').empty();
 
@@ -90,8 +95,6 @@ function attractionsRequest() {
 				count++;	
 				}
 				
-				//clear the list of attractions in case the button gets clicked twice
-				$('.attractionsList').empty();
 				
 				//set each of the navbars with their list content
 				var count = 0;
@@ -117,6 +120,7 @@ function attractionsRequest() {
 				}
 				
 				var catPage = '#' + categoryJSON[0].category
+				console.log('next page = ' + catPage);
 				//change to the attractions page
 				$.mobile.changePage(catPage);
 			}

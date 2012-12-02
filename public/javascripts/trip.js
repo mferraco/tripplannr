@@ -68,13 +68,11 @@ $('#trip').live("pageshow", function() {
 //center map on city
 function codeAddress() {
 	var address = $("#hidden_city").val();
-	console.log('did this too');
 	geocoder.geocode({
 		'address' : address
 	}, function(results, status) {
 		if(status == google.maps.GeocoderStatus.OK) {
 			map.setCenter(results[0].geometry.location);
-			console.log(results[0].geometry.location);
 		} else {
 			alert("Geocode was not successful for the following reason: " + status);
 		}

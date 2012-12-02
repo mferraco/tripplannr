@@ -59,7 +59,6 @@ exports.getAttractions = function(req, res) {
 				count++;
 			}
 			
-			console.log(categoryJSON);
 			//pass the map to the view to render the category tabs
 			res.json('categories', {categoryJSON: categoryJSON});
 	});	

@@ -90,6 +90,8 @@ function attractionsRequest() {
 				count++;	
 				}
 				
+				//clear the list of attractions in case the button gets clicked twice
+				$('.attractionsList').empty();
 				
 				//set each of the navbars with their list content
 				var count = 0;
@@ -98,8 +100,7 @@ function attractionsRequest() {
 					var link = "#" + categoryJSON[count].category
 					//add the navbar element to the navbar list
 					$('.attractionsList').append("<li><a href = '" + link + 
-						"'class='ui-state-persist'>" + categoryJSON[count].category + "</a></li>");
-						
+						"'>" + categoryJSON[count].category + "</a></li>");
 					count++;
 				}
 				
@@ -115,9 +116,9 @@ function attractionsRequest() {
 					count++
 				}
 				
-
+				var catPage = '#' + categoryJSON[0].category
 				//change to the attractions page
-				$.mobile.changePage('#attractions');
+				$.mobile.changePage(catPage);
 			}
 	});
 	return false;

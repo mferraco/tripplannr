@@ -35,11 +35,12 @@ exports.getAttractions = function(req, res) {
 			}
 
 			if (data.businesses != undefined) {
+				var returnedBusinesses = data.businesses.sort(sortNames);
 			//loop through each attractions returned
-			for (var i = 0; i < data.businesses.length; i++) {
+			for (var i = 0; i < returnedBusinesses.length; i++) {
 				//get all the categories for that business ex. ['Parks', 'parks']
-				var businessesCategories = data.businesses[i].categories;
-
+				var businessesCategories = returnedBusinesses[i].categories;
+				
 				//loop through categories and add to map
 				for (var j = 0; j < businessesCategories.length; j++) {
 					//if the category map contains the category for that attraction then
@@ -65,4 +66,14 @@ exports.getAttractions = function(req, res) {
 
 } 
 
+
+function sortNames(a, b){
+//Compare "a" and "b" in some fashion, and return -1, 0, or 1
+	if (a.name < b.name)
+		return -1;
+	else if (a.name > b.name)
+		return 1;
+	else
+		return 0;
+}
 

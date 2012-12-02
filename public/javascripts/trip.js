@@ -26,7 +26,7 @@ function getTrip(checkedAttractions) {
       	waypoints.push(waypt);
 	}
 	}
-	console.log(waypoints);
+
 	var request = {
 		origin: $('#start_point').val() + ' ' + $('#city').val(),
 		destination: $('#end_point').val() + ' ' + $('#city').val(),
@@ -37,43 +37,32 @@ function getTrip(checkedAttractions) {
 
 	directionsService.route(request, function(result, status) {
     	if (status == google.maps.DirectionsStatus.OK) {
-    		console.log(result);
       		directionsDisplay.setDirections(result);
     	}
   	});
 }
 
-
-
-$('#trip').live("pageinit", function() {
-   //$('#mapLocation').map('refresh');
-   //$('#trip').css('min-height', '100%');
-   //$('#trip').css('height', '100%');
-   //$('#mapLocation').css('height', $('#trip').height());
-   //google.maps.event.trigger(map, 'resize');
-   //console.log('did it');
-});
-
-
+//when the page shows
 $('#trip').live("pageshow", function() {
-   //$('#mapLocation').gmap('refresh');
-   			//$('#mapLocation').css('height', '100%');
-			//$('#mapLocation').css('width', '100%');
-			$('#mapLocation').css('height', $('#trip').height());
-			google.maps.event.trigger(map, 'resize');
-			codeAddress();
-   //google.maps.event.trigger(map, 'resize');
+	//set the height so the map shows
+	$('#mapLocation').css('height', $('#trip').height());
+	//resize the map to fit the new height
+	google.maps.event.trigger(map, 'resize');
+	//call the function to center and zoom the map
+	codeAddress();
 });
 
 
-//center map on city
+//center and zoom map on city
 function codeAddress() {
 	var address = $("#city").val();
 	geocoder.geocode({
 		'address' : address
 	}, function(results, status) {
 		if(status == google.maps.GeocoderStatus.OK) {
+			//center map on city coordinates
 			map.setCenter(results[0].geometry.location);
+			//zoom map on city coordinates
 			map.fitBounds(results[0].geometry.viewport);
 		} else {
 			alert("Geocode was not successful for the following reason: " + status);

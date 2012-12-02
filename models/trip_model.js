@@ -77,3 +77,26 @@ function sortNames(a, b){
 		return 0;
 }
 
+var user = require('../models/user');
+var db = user.getDB();
+
+exports.saveTrip = function(req, res) {
+	var city = req.query.city;
+	var start = req.query.start;
+	var end = req.query.end;
+	var waypoints = JSON.stingify(req.query.waypoints);
+	var username = $('#username').val();
+
+	db.trips.save({username: username, city: city, start: start, end: end, waypoints: waypoints}, function(err, saved) {
+		if( err || !saved ) {
+			res.render('error', {error: 'Trip not saved.'});
+		}
+		else {
+			res.render('error', {error: 'Trip saved.'});
+		}
+	});
+	
+	
+}
+
+

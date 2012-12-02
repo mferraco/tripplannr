@@ -136,3 +136,22 @@ function tripRequest() {
 	//call the method which sets up the map with the trip
 	getTrip(checkedAttractions);
 }
+
+
+//trying to select only 8
+$(document).ready(function(){
+	var maxChecks = 8;
+	$('input').click(function(){
+		console.log('CLICK')
+		   //update checkCount 
+	    checkCount = $(':checked').length;
+	
+	    if (checkCount >= maxChecks) {
+	        //alert('you may only choose up to ' + maxChecks + ' options');
+	        $(':checkbox[name=checkbox]').not(':checked').attr('disabled', true);
+	    } else {
+	        $(':checkbox[name=checkbox]:disabled').attr('disabled', false);
+	    }
+	})
+});
+

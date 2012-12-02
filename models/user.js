@@ -5,6 +5,10 @@ var collections = ["users"]
 var db = require("mongojs").connect(databaseUrl, collections);
 
 
+exports.getDB = function() {
+	return db;
+}
+
 //checks if user exists and logs them in
 exports.login = function(req, res) {
 	//username and password entered into form
@@ -53,10 +57,10 @@ exports.signUp = function(req, res) {
 		else { //username doesn't already exists so save user
 			db.users.save({username: username, password: password}, function(err, saved) {
 				if( err || !saved ) {
-					res.render('error', {error: 'user not saved'});
+					res.render('error', {error: 'User not saved.'});
 				}
 				else {
-					res.render('error', {error: 'user saved'});
+					res.render('error', {error: 'User saved.'});
 				}
 			});
 		}

@@ -43,7 +43,8 @@ app.put('/signUpRequest', user.signUp);
 //path for when a user enters a city
 app.get('/categoryRequest', trip_model.getCategories);
 app.get('/attractionsRequest', trip_model.getAttractions);
-//app.get('/tripRequest', trip_model.getTrip);
+
+app.put('/saveTrip', trip_model.saveTrip);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

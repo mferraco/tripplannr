@@ -1,5 +1,6 @@
 var map;
 var geocoder;
+
 function getTrip(checkedAttractions) {
 	//set up map directions objects
 	geocoder = new google.maps.Geocoder();
@@ -68,4 +69,28 @@ function codeAddress() {
 			alert("Geocode was not successful for the following reason: " + status);
 		}
 	});
+}
+
+//get this function to work!!! (so the trips can be saved)
+function saveTrip(waypoints) {
+	var start = $('#start_point').val();
+	var end = $('#end_point').val();
+	var city = $('#city').val();
+	
+	var waypoints = waypoints
+	
+	$.ajax({
+			url: "saveTrip",
+			type: "put",
+			data: {
+				city: city,
+				start: start,
+				end: end,
+				waypoints: waypoints
+			},
+			success: function(data) {
+				alert('trip saved');
+			}
+	});
+	return false;
 }

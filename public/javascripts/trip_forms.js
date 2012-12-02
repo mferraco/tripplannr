@@ -15,7 +15,7 @@ function categoryRequest() {
 				city: city
 			},
 			success: function(data) {
-				$('#hidden_city').val(data);
+				$('#city').val(data);
 				$.mobile.changePage('#categories');
 			}
 	});
@@ -58,7 +58,7 @@ function attractionsRequest() {
 			type: "get",
 			data: {
 				categories: categories,
-				city: $('#hidden_city').val()
+				city: $('#city').val()
 			},
 			success: function(data) {	
 				//set the category JSON from the JSON returned

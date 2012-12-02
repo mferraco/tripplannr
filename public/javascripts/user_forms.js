@@ -24,7 +24,7 @@ function login() {
 					$('#welcome_header').text('Welcome, ' + username);
 				}
 				else {
-					$('.error').html(data);
+					$('.error_on_log_in').html(data);
 				}
 			}
 	});
@@ -51,7 +51,7 @@ function signUp() {
 					$.mobile.changePage('#userUi');
 				}
 				else {
-					$('.error').html(data);	
+					$('.error_on_sign_up').html(data);	
 				}
 			}
 	});

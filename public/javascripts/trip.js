@@ -20,23 +20,24 @@ function getTrip(checkedAttractions) {
 	if (attractions.length > 0 ) {
 	for (var i = 0; i < attractions.length; i++) {
 		var waypt = {
-          location: attractions[i],
+          location: attractions[i] + ' ' + $('#city').val(),
           stopover: true
       	}
       	waypoints.push(waypt);
 	}
 	}
-	
+	console.log(waypoints);
 	var request = {
-		origin: "Empire State Building",
-		destination: "World Trade Center Memorial",
-		travelMode: google.maps.TravelMode.DRIVING,
+		origin: $('#start_point').val() + ' ' + $('#city').val(),
+		destination: $('#end_point').val() + ' ' + $('#city').val(),
+		travelMode: google.maps.TravelMode.WALKING, //DRIVING
 		waypoints: waypoints,
 		optimizeWaypoints: true,
 	}
 
 	directionsService.route(request, function(result, status) {
     	if (status == google.maps.DirectionsStatus.OK) {
+    		console.log(result);
       		directionsDisplay.setDirections(result);
     	}
   	});
@@ -44,14 +45,14 @@ function getTrip(checkedAttractions) {
 
 
 
-//$('#trip').live("pageinit", function() {
+$('#trip').live("pageinit", function() {
    //$('#mapLocation').map('refresh');
    //$('#trip').css('min-height', '100%');
    //$('#trip').css('height', '100%');
    //$('#mapLocation').css('height', $('#trip').height());
    //google.maps.event.trigger(map, 'resize');
    //console.log('did it');
-//});
+});
 
 
 $('#trip').live("pageshow", function() {
@@ -67,12 +68,13 @@ $('#trip').live("pageshow", function() {
 
 //center map on city
 function codeAddress() {
-	var address = $("#hidden_city").val();
+	var address = $("#city").val();
 	geocoder.geocode({
 		'address' : address
 	}, function(results, status) {
 		if(status == google.maps.GeocoderStatus.OK) {
 			map.setCenter(results[0].geometry.location);
+			map.fitBounds(results[0].geometry.viewport);
 		} else {
 			alert("Geocode was not successful for the following reason: " + status);
 		}

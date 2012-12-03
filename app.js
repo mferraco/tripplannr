@@ -3,6 +3,10 @@
  * Module dependencies.
  */
 
+//this file serves as the controller for the application
+//it defines all routes throughout the application
+
+
 var express = require('express')
   //, routes = require('./routes')
   , user = require('./models/user')
@@ -32,9 +36,13 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+//home page route
 app.get('/', home.home);
 
-//path for a user loggin in
+//desktop login
+app.get('/desktop', home.desktop)
+
+//path for a user logging in
 app.get('/loginRequest', user.login);
 
 //path for a user signing up
@@ -42,11 +50,15 @@ app.put('/signUpRequest', user.signUp);
 
 //path for when a user enters a city
 app.get('/categoryRequest', trip_model.getCategories);
+//path for when a user has selected attractions
 app.get('/attractionsRequest', trip_model.getAttractions);
 
+//path for when a user saves a trip
 app.put('/saveTrip', trip_model.saveTrip);
 
+//path for when the trips need loaded into the list on the users home page
 app.get('/loadTrips', trip_model.loadTrips);
+//path for when a single trip map needs loaded when a user selects it from saved trips
 app.get('/loadTrip', trip_model.loadTrip);
 
 http.createServer(app).listen(app.get('port'), function(){

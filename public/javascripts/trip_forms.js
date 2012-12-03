@@ -1,21 +1,24 @@
+//functions which are evoked on actions by the user
 $(function() {
-	$("#start_planning").click(categoryRequest);
-	$("#categoryForm").submit(attractionsRequest);
-	$(".attractionsForm").click(tripRequest);
-	$('#saveTrip').click(getWaypoints);
-	$('.existingTrip').live('click', function(event) {
+	$("#start_planning").click(categoryRequest); //gets the list of categories to display
+	$("#categoryForm").submit(attractionsRequest); //gets the attractions to display
+	$(".attractionsForm").click(tripRequest); //gets the trip to display
+	$('#saveTrip').click(getWaypoints); //gets the waypoints
+	$('.existingTrip').live('click', function(event) { //must be 'live' because .existingTrip is added to the DOM dynamically
 		var id = event.target.innerHTML;
-		console.log(id);
 		loadTrip(id); //in trip.js
 	});
 });
 
+//the attractions that are selected by the user
 var checkedAttractions = [];
 
 //function called when the user enters a city and clicks the button
 function categoryRequest() {
+	//get city value from input
 	var city = $('#city').val();
 	
+	//ajax request to evoke server side method trip_model.getCategories()
 	$.ajax({
 			url: "categoryRequest",
 			type: "get",
@@ -23,7 +26,6 @@ function categoryRequest() {
 				city: city
 			},
 			success: function(data) {
-				$('#city').val(data);
 				$.mobile.changePage('#categories');
 			}
 	});
@@ -32,7 +34,10 @@ function categoryRequest() {
 
 
 //function called when the user enters a city and clicks the button
+//evokes the trip_model.getAttractions() methods
 function attractionsRequest() {
+	
+	//find out whether the attraction was chosen or not
 	var collegeuniv = $('#collegeuniv').is(':checked');
 	var landmarks = $('#landmarks').is(':checked');
 	var movietheaters = $('#movietheaters').is(':checked');
@@ -42,6 +47,7 @@ function attractionsRequest() {
 	
 	var categories = [];
 	
+	//if it was chosen then push that onto the list of categories
 	if (collegeuniv == true) {
 		categories.push('collegeuniv');
 	}
@@ -61,7 +67,7 @@ function attractionsRequest() {
 		categories.push('zoos');
 	}
 	
-	
+	//ajax request
 	$.ajax({
 			url: "attractionsRequest",
 			type: "get",
@@ -70,18 +76,21 @@ function attractionsRequest() {
 				city: $('#city').val()
 			},
 			success: function(data) {	
-				//set the category JSON from the JSON returned
+				
+				//gets all of the attractions from Yelp based on the city and categories chosen
 				var categoryJSON = data.categoryJSON;
 
-				//empty the attractions list
+				//empty the attractions list so no old data is displayed in the view
 				$('#attractionsList').empty();
 
 			
-				//set up each categories page
+				//set up each categories page (navbar to choose categories)(created in the js file because JQuery Mobile was screwing up styling)
 				var count = 0;
+				//loop through each category
 				for (category in categoryJSON) {
 					//add each page to the body
 					$('body').append(
+						//each page has an id of that category
 						"<div data-role='page' id='" + categoryJSON[count].category + "' data-theme='a'>" + 
 								"<div data-role='header' data-id='attractionsBar' data-position='fixed'>" +
 									"<div data-role='navbar'>" + 
@@ -90,6 +99,7 @@ function attractionsRequest() {
 									"</div>" +
 								"</div>" + 
 								"<div class='checkboxesAttractions'>" + 
+								//the div where the attractions for that category will be put
 								"<div class='" + categoryJSON[count].category + "'></div>" +
 								"</div>" + 
 								"<a href='#trip'><button class='attractionsForm' onclick='tripRequest()'>Plan Now!</button></a>" +
@@ -114,8 +124,10 @@ function attractionsRequest() {
 				
 				//put the checkboxes onto the page
 				var count = 0;
+				//loop through all fo the categories
 				for (category in categoryJSON) {
 					for (var i = 0; i < categoryJSON[count].attractions.length; i++) {
+						//put the checkbox in the div corresponding to that category
 						var identifier = "." + categoryJSON[count].category
 						$(identifier).append(
 							"<label><input type='checkbox' id='" + categoryJSON[count].attractions[i] + "'>" + categoryJSON[count].attractions[i] + "</label>"
@@ -124,15 +136,18 @@ function attractionsRequest() {
 					count++
 				}
 				
+				//create the link for the first category
 				var catPage = '#' + categoryJSON[0].category
 
-				//change to the attractions page
+				//change to the attractions page for the first category
 				$.mobile.changePage(catPage);
 			}
 	});
 	return false;
 }
 
+//this function gets all of the attractions that were checked and adds them to an array
+//then it calls the getTrip() method in trip.js which creates the map
 function tripRequest() {
 
 	//get all of the attractions on the form that were checked
@@ -145,24 +160,7 @@ function tripRequest() {
 	getTrip(checkedAttractions);
 }
 
-
-//trying to select only 8
-/*$(document).ready(function(){
-	var maxChecks = 8;
-	$('input').click(function(){
-		console.log('CLICK')
-		   //update checkCount 
-	    checkCount = $(':checked').length;
-	
-	    if (checkCount >= maxChecks) {
-	        //alert('you may only choose up to ' + maxChecks + ' options');
-	        $(':checkbox[name=checkbox]').not(':checked').attr('disabled', true);
-	    } else {
-	        $(':checkbox[name=checkbox]:disabled').attr('disabled', false);
-	    }
-	})
-});*/
-
+//calls the saveTrip() method in trip.js
 function getWaypoints() {
 	saveTrip(checkedAttractions);
 }

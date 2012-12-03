@@ -2,7 +2,10 @@ $(function() {
 	$("#start_planning").click(categoryRequest);
 	$("#categoryForm").submit(attractionsRequest);
 	$(".attractionsForm").click(tripRequest);
+	$('#saveTrip').click(getWaypoints);
 } );
+
+var checkedAttractions = [];
 
 //function called when the user enters a city and clicks the button
 function categoryRequest() {
@@ -53,8 +56,6 @@ function attractionsRequest() {
 		categories.push('zoos');
 	}
 	
-	console.log('here categories = ' + categories);
-	console.log('here city = ' + $('#city').val());
 	
 	$.ajax({
 			url: "attractionsRequest",
@@ -66,8 +67,7 @@ function attractionsRequest() {
 			success: function(data) {	
 				//set the category JSON from the JSON returned
 				var categoryJSON = data.categoryJSON;
-				console.log('categoryJSON ----------------------- ');
-				console.log(categoryJSON);
+
 				//empty the attractions list
 				$('#attractionsList').empty();
 
@@ -120,7 +120,7 @@ function attractionsRequest() {
 				}
 				
 				var catPage = '#' + categoryJSON[0].category
-				console.log('next page = ' + catPage);
+
 				//change to the attractions page
 				$.mobile.changePage(catPage);
 			}
@@ -129,7 +129,6 @@ function attractionsRequest() {
 }
 
 function tripRequest() {
-	var checkedAttractions = [];
 
 	//get all of the attractions on the form that were checked
 	$(':checkbox', '.checkboxesAttractions').filter(':checked').each(function(){
@@ -143,7 +142,7 @@ function tripRequest() {
 
 
 //trying to select only 8
-$(document).ready(function(){
+/*$(document).ready(function(){
 	var maxChecks = 8;
 	$('input').click(function(){
 		console.log('CLICK')
@@ -157,5 +156,9 @@ $(document).ready(function(){
 	        $(':checkbox[name=checkbox]:disabled').attr('disabled', false);
 	    }
 	})
-});
+});*/
+
+function getWaypoints() {
+	saveTrip(checkedAttractions);
+}
 

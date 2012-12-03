@@ -15,7 +15,7 @@
   
   <body>
 
-<!-- Home Login/Signup Page ---------------------------------- -->
+<!-- Home Login Page ---------------------------------- -->
 <div data-role="page" id="intro" data-theme="a">
 
 	<div data-role="header">
@@ -28,11 +28,11 @@
 		<form id="login">
 			<div data-role="fieldcontain" class="ui-hide-label">
 				<label for="username">Username:</label>
-				<input type="text" name="username" id="username" placeholder="Username"/>
+				<input type="text" name="username" id="username" placeholder="Username" value='mike'/>
 			</div>
 			<div data-role="fieldcontain" class="ui-hide-label">
 				<label for="password">Password:</label>
-				<input type="text" name="password" id="password" placeholder="Password"/>
+				<input type="text" name="password" id="password" placeholder="Password" value='mike'/>
 			</div>
 			<input type="submit" value="Login" />
 		</form>
@@ -127,14 +127,13 @@
 			<div data-role="collapsible">
 	   			<h3>Plan a trip.</h3>
 	   			<p>Enter a city to start planning.</p>
-	   			<input type="text" id="city" />
+	   			<input type="text" id="city" value='pittsburgh' />
 	   			<a href='#start_stop' data-role='button'>Start planning!</a>
 			</div>
 			
 			<div data-role="collapsible">
 	   			<h3>Load saved trips.</h3>
-	   			<ul>
-	   				<!-- saved trips will be inserted here from db -->
+	   			<ul id="loadedTrips">
 	   			</ul>
 			</div>
 		</div>
@@ -153,6 +152,8 @@
 	
 	<input type='text' id='start_point' placeholder='start point' value='heinz field'/>
 	<input type='text' id='end_point' placeholder='end point' value='south side cheesecake factory'/>
+	<label><input type="checkbox" id="walking" /> Walking </label>
+	<label><input type="checkbox" id="driving" /> Driving </label>
 	<button id = "start_planning">Now pick your midpoints.</button>
 	
 </div>
@@ -196,6 +197,19 @@
 	</div>
 	
 	<div id="mapLocation"></div>
+	
+			
+	<div>
+		<div data-role="fieldcontain" class="ui-hide-label">
+			<label for="tripName">Name of Trip:</label>
+			<input type='text' name='tripName' id='tripName' placeholder='trip name' />
+		</div>
+		
+		<a href data-role='button' id="saveTrip">Save Your Trip</a>
+	</div>
+	
+	<div id='trip_save_error'></div>
+
 			
 </div>
 

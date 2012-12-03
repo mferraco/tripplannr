@@ -20,6 +20,7 @@ function login() {
 			success: function(data) {
 				//if successful login then call function to load user_ui page
 				if (data == 'success') {
+					loadTrips(username);
 					$.mobile.changePage('#userUi');
 					$('#welcome_header').text('Welcome, ' + username);
 				}
@@ -47,11 +48,39 @@ function signUp() {
 				password: password
 			},
 			success: function(data) {
-				if (data == 'user saved') {
+				if (data == 'User saved.') {
+					loadTrips(username);
 					$.mobile.changePage('#userUi');
+					$('#welcome_header').text('Welcome, ' + username);
 				}
 				else {
 					$('#error_on_sign_up').html(data);	
+				}
+			}
+	});
+	return false;
+}
+
+//load trips to the user UI page on login
+function loadTrips(username) {
+	$.ajax({
+			url: "loadTrips",
+			type: "get",
+			data: {
+				username: username
+			},
+			success: function(data) {
+				if (data == 'You do not have any saved trips.') {
+					$('#loadedTrips').append(data);
+				}
+				else {
+					var trips = data.trips;
+					
+					$('#loadedTrips').empty();
+	
+					for (var i = 0; i < trips.length; i++) { 
+						$('#loadedTrips').append('<li>' + trips[i].name + '</li>');
+					}
 				}
 			}
 	});

@@ -27,11 +27,18 @@ function getTrip(checkedAttractions) {
       	waypoints.push(waypt);
 	}
 	}
-
+	
+	var method = "";
+	if 	($('#walking').is(':checked')) {
+		method = google.maps.TravelMode.WALKING;
+	}
+	else {
+		method = google.maps.TravelMode.DRIVING;
+	}
 	var request = {
 		origin: $('#start_point').val() + ' ' + $('#city').val(),
 		destination: $('#end_point').val() + ' ' + $('#city').val(),
-		travelMode: google.maps.TravelMode.WALKING, //DRIVING
+		travelMode: method, //DRIVING
 		waypoints: waypoints,
 		optimizeWaypoints: true,
 	}
@@ -56,7 +63,7 @@ $('#trip').live("pageshow", function() {
 
 //center and zoom map on city
 function codeAddress() {
-	var address = $("#city").val();
+	var address = $("#start_point").val();
 	geocoder.geocode({
 		'address' : address
 	}, function(results, status) {
@@ -71,13 +78,18 @@ function codeAddress() {
 	});
 }
 
+
 //get this function to work!!! (so the trips can be saved)
 function saveTrip(waypoints) {
 	var start = $('#start_point').val();
 	var end = $('#end_point').val();
 	var city = $('#city').val();
 	
-	var waypoints = waypoints
+	var name = $('#tripName').val();
+	var username = $('#username').val();
+	
+	var waypoints = waypoints;
+	
 	
 	$.ajax({
 			url: "saveTrip",
@@ -86,10 +98,12 @@ function saveTrip(waypoints) {
 				city: city,
 				start: start,
 				end: end,
-				waypoints: waypoints
+				waypoints: waypoints,
+				name: name,
+				username: username
 			},
 			success: function(data) {
-				alert('trip saved');
+				$('#trip_save_error').html(data);
 			}
 	});
 	return false;

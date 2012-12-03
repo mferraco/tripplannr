@@ -1,9 +1,10 @@
 
 //set up database
-var databaseUrl = "mongodb://nodejitsu_mferraco:vvllmfjpmb9a0d8fta3j6g69km@ds043947.mongolab.com:43947/nodejitsu_mferraco_nodejitsudb7764651684";
-var collections = ["users"]
+var databaseUrl = "mydb"//"mongodb://nodejitsu_mferraco:vvllmfjpmb9a0d8fta3j6g69km@ds043947.mongolab.com:43947/nodejitsu_mferraco_nodejitsudb7764651684";
+var collections = ["users", "trips"]
 var db = require("mongojs").connect(databaseUrl, collections);
 
+var currentUser = null;
 
 exports.getDB = function() {
 	return db;
@@ -28,6 +29,7 @@ exports.login = function(req, res) {
 				res.render('error', {error: 'User does not exist.'});
 			}
 			else if (user.password == password) { //good log in
+				currentUser = username;
 				res.render('trigger', {trigger: 'success'});	
 			}
 			else { //wrong password
@@ -60,11 +62,16 @@ exports.signUp = function(req, res) {
 					res.render('error', {error: 'User not saved.'});
 				}
 				else {
+					currentUser = username;
 					res.render('error', {error: 'User saved.'});
 				}
 			});
 		}
 	});
 	
+}
+
+exports.logout = function(req, res) {
+	currentUser = null;
 }
 

@@ -5,6 +5,12 @@ var yelp = require("yelp").createClient({
   token_secret: "3OX1fAWsu61Y87O_BsuykKA1Pno"
 });
 
+//set up database
+var databaseUrl = "mydb"//"mongodb://nodejitsu_mferraco:vvllmfjpmb9a0d8fta3j6g69km@ds043947.mongolab.com:43947/nodejitsu_mferraco_nodejitsudb7764651684";
+var collections = ["users", "trips"];
+var db = require("mongojs").connect(databaseUrl, collections);
+
+
 
 exports.getCategories = function (req, res) {
 	var city = req.query.city;
@@ -15,7 +21,6 @@ exports.getAttractions = function(req, res) {
 	//get attractions from Yelp API with AJAX request
 	
 	var categories = req.query.categories;
-	console.log('categories = ' + categories);
 	
 	//loop through and turn into string to be used in query
 	var catString = "";
@@ -26,7 +31,6 @@ exports.getAttractions = function(req, res) {
 			catString+= ',';
 	}
 	var city = req.query.city;
-	console.log('city = ' + city);
 	
 	yelp.search({location: city, category_filter: catString }, function(err, data) {
 			//set up the category map with an empty array value for each category key
@@ -62,8 +66,7 @@ exports.getAttractions = function(req, res) {
 				count++;
 			}
 			
-			console.log('category json ------------------------------------');
-			console.log(categoryJSON);
+
 			//pass the map to the view to render the category tabs
 			res.json('categories', {categoryJSON: categoryJSON});
 	});	
@@ -81,26 +84,48 @@ function sortNames(a, b){
 		return 0;
 }
 
-var user = require('../models/user');
-var db = user.getDB();
-
 exports.saveTrip = function(req, res) {
-	var city = req.query.city;
-	var start = req.query.start;
-	var end = req.query.end;
-	var waypoints = JSON.stingify(req.query.waypoints);
-	var username = $('#username').val();
+	console.log(req.body.city);
+	var city = req.body.city;
+	var start = req.body.start;
+	var end = req.body.end;
+	var waypoints = JSON.stringify(req.body.waypoints);
+	var name = req.body.name;
+	var username = req.body.username;
+	
+	if (name == null || name == "") {
+		res.render('error', {error: 'Enter a trip name before saving.'});
+	}
 
-	db.trips.save({username: username, city: city, start: start, end: end, waypoints: waypoints}, function(err, saved) {
-		if( err || !saved ) {
-			res.render('error', {error: 'Trip not saved.'});
+	db.trips.find({name: name}, function(err, trips) {
+		if (trips.length > 0) {
+			res.render('error', {error: 'Trip name already used.'})
 		}
-		else {
-			res.render('error', {error: 'Trip saved.'});
+		else { 
+			db.trips.save({username: username, name: name, city: city, start: start, end: end, waypoints: waypoints}, function(err, saved) {
+				if( err || !saved ) {
+					res.render('error', {error: 'Trip not saved.'});
+				}
+				else {
+					res.render('error', {error: 'Trip saved.'});
+				}
+			});
 		}
 	});
+}
+
+
+exports.loadTrips = function(req, res) {
+	var username = req.query.username;
 	
-	
+	db.trips.find({username: username}, function(err, trips) {
+		if (trips.length == 0) {
+			res.render('error', {error: 'You do not have any saved trips.'});
+		}
+		else {
+			res.json('listOfTrips', {trips: trips});
+		}
+	});
 }
 
 

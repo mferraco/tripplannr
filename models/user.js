@@ -22,7 +22,7 @@ exports.login = function(req, res) {
 		//find the user in the database
 		db.users.find({username: username }, function(err, users) {
 			
-			if (users == undefined) { //wrong username
+			if (users.length == 0) { //wrong username
 				res.render('error', {error: 'User does not exist.'});
 			}
 			else if (users[0].password == password) { //good log in

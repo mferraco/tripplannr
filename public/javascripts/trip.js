@@ -234,6 +234,7 @@ function loadTrip(tripName) {
 //sets up the list of attractions below the map
 //also removes the save trip button is this is a loaded trip
 function setUpListOfDirections(result, removeSave) {
+	console.log(result);
 	 var start = startPoint;
 	 var end = endPoint;
 	 //these are the waypoints the user chose to visit
@@ -255,7 +256,10 @@ function setUpListOfDirections(result, removeSave) {
 	 }
 	 
 	 //add the end point
-	 $('#directionsList').append("<ol>" + endPoint + "</ol>");
+	 $('#directionsList').append("<ol>" + endPoint + "</ol><br><br>");
+	 
+	 //total duration
+	 $('#directionsList').append("<ol>Total: " + result.routes[0].legs[result.routes[0].legs.length - 1].duration.text + "</ol>");
 	 
 	 //remove the save trip field depending on whether you have loading or created a trip
 	 if (removeSave == true) {

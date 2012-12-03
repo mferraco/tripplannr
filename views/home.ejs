@@ -14,6 +14,7 @@
   </head>
   
   <body>
+  	
 
 <!-- Home Login Page ---------------------------------- -->
 <div data-role="page" id="intro" data-theme="a">
@@ -32,7 +33,7 @@
 			</div>
 			<div data-role="fieldcontain" class="ui-hide-label">
 				<label for="password">Password:</label>
-				<input type="text" name="password" id="password" placeholder="Password" />
+				<input type="password" name="password" id="password" placeholder="Password" />
 			</div>
 			<input type="submit" value="Login" />
 		</form>
@@ -104,7 +105,7 @@
 		</div>
 		<div data-role="fieldcontain" class="ui-hide-label">
 			<label for="password">Password:</label>
-			<input type="text" name="sign_up_password" id="sign_up_password" placeholder="Password"/>
+			<input type="password" name="sign_up_password" id="sign_up_password" placeholder="Password"/>
 		</div>
 		<input type="submit" value="Sign Up" />
 	</form>
@@ -114,11 +115,14 @@
 
 <!-- ----------------------------------------------- -->
 
+
+
 <!-- User UI Page ---------------------------------- -->
 <div data-role="page" id="userUi" data-theme="a">
-
+<div id="userUi_hidePage">
 	<div data-role="header">
 		<h1 id="welcome_header"></h1>
+		<button class="logout">Log Out</button>
 	</div><!-- /header -->
 	
 		<p>What would you like to do?</p>
@@ -137,7 +141,10 @@
 	   			</ul>
 			</div>
 		</div>
-		
+</div>
+
+<div id="userUi_not_logged_in"><p>You need to log in to view this page.</p></div>
+	
 </div>
 
 <!-- ----------------------------------------------- -->
@@ -146,6 +153,8 @@
 
 
 <div data-role="page" id="start_stop" data-theme="a">
+	
+	<div id='start_stop_hidePage'>
 	<div data-role="header">
 		<h1>TripPlannr</h1>
 	</div><!-- /header -->
@@ -155,6 +164,9 @@
 	<label><input type="checkbox" id="walking" /> Walking </label>
 	<label><input type="checkbox" id="driving" /> Driving </label>
 	<button id = "start_planning">Now pick your stops in between.</button>
+	</div>
+	
+	<div id="start_stop_not_logged_in"><p>You need to log in to view this page.</p></div>
 	
 </div>
 
@@ -163,7 +175,7 @@
 <!-- Select Categories Page ---------------------------------- -->
 
 <div data-role="page" id="categories" data-theme="a">
-
+	<div id='categories_hidePage'>
 	<div data-role="header">
 		<h1>Choose Categories</h1>
 	</div><!-- /header -->
@@ -177,6 +189,9 @@
 			<label><input type="checkbox" id="zoos" /> Zoos </label>
 			<input type='submit' id='submitCategories' value="Plan!" />
 		</form>
+	</div>
+	
+	<div id="categories_not_logged_in"><p>You need to log in to view this page.</p></div>
 		
 </div>
 
@@ -192,6 +207,8 @@
 <!-- Show Trip Page ---------------------------------- -->
 
 <div data-role="page" id="trip" data-theme="a">
+	<div id='trip_hidePage'>
+	
 	<div data-role="header">
 		<h1>Your Trip!</h1>
 	</div>
@@ -211,14 +228,17 @@
 	</div>
 	
 	<div id='trip_save_error'></div>
+	
+	</div>
 
-			
+	<div id="trip_not_logged_in"><p>You need to log in to view this page.</p></div>
+	
 </div>
-
 
 </body>
 </html>
 
+<script src="javascripts/session.js"> </script>
 
 	
 

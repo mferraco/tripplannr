@@ -4,7 +4,8 @@
 $(function() {
 	$("#login").submit(login);
 	$("#signup").submit(signUp);
-	} );
+	$('.logout').click(logOut);	
+});
 
 //function called when login is submitted
 function login() {
@@ -28,7 +29,7 @@ function login() {
 					//loads all of the previously saved trips for that user
 					loadTrips(username);
 					$.mobile.changePage('#userUi');
-					$('#welcome_header').text('Welcome, ' + username);
+					$('#welcome_header').text('Welcome, ' + sessionStorage.username);
 				}
 				else {
 					//if there is a login error then display it
@@ -74,7 +75,13 @@ function signUp() {
 
 //logs out a user by removing them from the sessionStorage
 function logOut() {
-	sessionStorage.username == undefined;
+	console.log('here');
+	sessionStorage.username = undefined;
+	$('#username').val("");
+	$('#password').val("");
+	$('#sign_up_username').val("");
+	$('#sign_up_password').val("");
+	$.mobile.changePage('#intro');
 }
 
 //load trips to the user UI page on login

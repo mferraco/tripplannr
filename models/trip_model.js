@@ -117,10 +117,7 @@ exports.saveTrip = function(req, res) {
 
 	//give an error if that name already exists in the db
 	db.trips.find({name: name}, function(err, trips) {
-		if (trips.length > 0) {
-			res.render('error', {error: 'Trip name already used.'})
-		}
-		else { 
+		if (!trips || trips.length == 0) {
 			//save the trip to the db with all of the attributes
 			db.trips.save({username: username, name: name, method: method, city: city, start: start, end: end, waypoints: waypoints}, function(err, saved) {
 				if( err || !saved ) {
@@ -130,6 +127,9 @@ exports.saveTrip = function(req, res) {
 					res.render('error', {error: 'Trip saved.'});
 				}
 			});
+		}
+		else { 
+			res.render('error', {error: 'Trip name already used.'})
 		}
 	});
 }

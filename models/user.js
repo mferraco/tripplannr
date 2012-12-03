@@ -8,11 +8,18 @@ exports.getDB = function() {
 	return db;
 }
 
+var crypto = require('crypto');
+
 //checks if user exists and logs them in
 exports.login = function(req, res) {
 	//username and password entered into form
 	var username = req.query.user;
 	var password = req.query.pass;
+	
+	var hash = crypto.createHash('sha1');
+	hash.update(password);
+	password = hash.digest('hex');
+	
 	
 	//if the username and password and blank then give error
 	if (username == "" || password == "") {
@@ -42,6 +49,11 @@ exports.signUp = function(req, res) {
 	var username = req.body.username;
 	var password = req.body.password;
 	
+		
+	var hash = crypto.createHash('sha1');
+	hash.update(password);
+	password = hash.digest('hex');
+	
 	//if no name or password is entered give error
 	if ( username == "" || password == "") {
 		res.render('error', {error: 'Username and Password fields must be filled.'})
@@ -49,11 +61,7 @@ exports.signUp = function(req, res) {
 	
 	//check if the username already exists in the database
 	db.users.find({username: username}, function(err, users) {
-		console.log(users);
-		if (users.length > 0) {
-			res.render('error', {error: 'Username already taken.'})
-		}
-		else { //username doesn't already exists so save user
+		if (!users || users.length == 0) {
 			db.users.save({username: username, password: password}, function(err, saved) {
 				if( err || !saved ) {
 					res.render('error', {error: 'User not saved.'});
@@ -62,6 +70,9 @@ exports.signUp = function(req, res) {
 					res.render('error', {error: 'User saved.'});
 				}
 			});
+		}
+		else { //username doesn't already exists so save user
+			res.render('error', {error: 'Username already taken.'})
 		}
 	});
 	

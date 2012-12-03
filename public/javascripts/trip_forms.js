@@ -3,7 +3,12 @@ $(function() {
 	$("#categoryForm").submit(attractionsRequest);
 	$(".attractionsForm").click(tripRequest);
 	$('#saveTrip').click(getWaypoints);
-} );
+	$('.existingTrip').live('click', function(event) {
+		var id = event.target.innerHTML;
+		console.log(id);
+		loadTrip(id); //in trip.js
+	});
+});
 
 var checkedAttractions = [];
 

@@ -79,8 +79,10 @@ function loadTrips(username) {
 					$('#loadedTrips').empty();
 	
 					for (var i = 0; i < trips.length; i++) { 
-						$('#loadedTrips').append('<li>' + trips[i].name + '</li>');
-					}
+						$('#loadedTrips').append(
+							"<li><a href='#trip'><button class='existingTrip' >" + trips[i].name + "</button></a></li>"
+						);
+					} //onclick='" + loadTrip(trips[i].name) + "'
 				}
 			}
 	});

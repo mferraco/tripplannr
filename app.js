@@ -47,6 +47,7 @@ app.get('/attractionsRequest', trip_model.getAttractions);
 app.put('/saveTrip', trip_model.saveTrip);
 
 app.get('/loadTrips', trip_model.loadTrips);
+app.get('/loadTrip', trip_model.loadTrip);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

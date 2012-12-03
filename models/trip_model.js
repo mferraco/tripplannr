@@ -92,6 +92,7 @@ exports.saveTrip = function(req, res) {
 	var waypoints = JSON.stringify(req.body.waypoints);
 	var name = req.body.name;
 	var username = req.body.username;
+	var method = req.body.method;
 	
 	if (name == null || name == "") {
 		res.render('error', {error: 'Enter a trip name before saving.'});
@@ -102,7 +103,7 @@ exports.saveTrip = function(req, res) {
 			res.render('error', {error: 'Trip name already used.'})
 		}
 		else { 
-			db.trips.save({username: username, name: name, city: city, start: start, end: end, waypoints: waypoints}, function(err, saved) {
+			db.trips.save({username: username, name: name, method: method, city: city, start: start, end: end, waypoints: waypoints}, function(err, saved) {
 				if( err || !saved ) {
 					res.render('error', {error: 'Trip not saved.'});
 				}
@@ -124,6 +125,20 @@ exports.loadTrips = function(req, res) {
 		}
 		else {
 			res.json('listOfTrips', {trips: trips});
+		}
+	});
+}
+
+exports.loadTrip = function(req, res) {
+	var username = req.query.username;
+	var name = req.query.tripName;
+	
+	db.trips.find({username:username, name: name}, function (err, trips) {
+		if (trips.length == 0) {
+			res.render('error', {error: 'No trips by that name.'});
+		}
+		else {
+			res.json('listOfTrips', {trip: trips});
 		}
 	});
 }

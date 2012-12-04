@@ -22,7 +22,7 @@ exports.getCategories = function (req, res) {
 //evoked by getAttractions ajax request in trip_forms.js
 //gets attractions from Yelp API using module
 exports.getAttractions = function(req, res) {
-
+	console.log('made it to getAttractions');
 	var categories = req.query.categories;
 	
 	//loop through and turn into string to be used in query
@@ -39,7 +39,9 @@ exports.getAttractions = function(req, res) {
 	var city = req.query.city;
 	
 	//yelp query
+	try {
 	yelp.search({location: city, category_filter: catString }, function(err, data) {
+
 			//set up an empty category map
 			categoryMap = {};
 			
@@ -82,7 +84,11 @@ exports.getAttractions = function(req, res) {
 
 			//pass the map to the view to render the category tabs
 			res.json('categories', {categoryJSON: categoryJSON});
-	});	
+	});
+	}
+	catch(e) {
+		console.log('catch error = ' + e);
+	}	
 
 } 
 
